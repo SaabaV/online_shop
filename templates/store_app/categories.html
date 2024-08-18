@@ -1,0 +1,21 @@
+<div class="filters">
+    <div class="filter-group">
+        <label>Kategorien</label>
+        <div id="category-menu">
+            {% for category in categories %}
+            <div class="category-option{% if category.id|stringformat:"s" in selected_categories %} selected{% endif %}" data-category-id="{{ category.id }}">
+                <span>{{ category.name }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="filter-group">
+        <label for="price-range">Price range:</label>
+        <div id="price-range"></div>
+        <div id="price-label">€0 - €250</div>
+        <input type="hidden" id="min_price" name="min_price" value="0">
+        <input type="hidden" id="max_price" name="max_price" value="250">
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</div>
+

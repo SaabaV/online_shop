@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <h2>Shipping Address</h2>
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+        </form>
+
+        <h2>Order Summary</h2>
+        <ul>
+            {% for item in cart.items.all %}
+            <li>{{ item.product.name }} ({{ item.product.color }}) - {{ item.quantity }} x ${{ item.price }}</li>
+            {% endfor %}
+        </ul>
+        <p>Total: ${{ cart.get_total_cost }}</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+{% load static %}
+{% load range_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/categories.css' %}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+    <style>
+        .hidden-description {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="content">
+                {% if request.user.is_superuser %}
+                <div class="add-product-container">
+                    <a href="{% url 'product_create' %}" class="btn btn-primary">Add Product</a>
+                </div>
+            {% endif %}
+        <div class="categories-container">
+            {% include 'store_app/categories.html' %}
+        </div>
+
+            <div class="products-container">
+                <h2 class="products-header">All Products</h2>
+            
+                <div class="card-container">
+                    {% for product in page_obj %}
+                        <div class="card">
+                            <a href="{% url 'product_detail' product.pk %}">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{% static 'images/default.png' %}" class="card-img-top product-image" alt="Default Image">
+                            {% endif %}
+                            <div class="card-body">
+                                <h3 class="card-title">{{ product.name }}</h3>
+                            <!-- Отображение рейтинга -->
+                                <div class="rating">
+                                    {% for i in 1|to_range:6 %}
+                                        {% if i <= product.average_rating %}
+                                            <span class="star filled">★</span>
+                                        {% else %}
+                                            <span class="star">☆</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span>({{ product.review_count }} reviews)</span>
+                                </div>
+                            
+                                <p class="card-text hidden-description">{{ product.description }}</p>
+                                {% if product.discounted_price %}
+                                    <p class="card-text"><strong>Sale Price:</strong> ${{ product.discounted_price }}</p>
+                                    <p class="card-text"><del>Original Price: ${{ product.price }}</del></p>
+                                {% else %}
+                                    <p class="card-text"><strong>Price:</strong> ${{ product.price }}</p>
+                                {% endif %}
+                                <div class="button-container">
+                                    <form action="{% url 'add_to_cart' product.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                    </form>
+                                    <form action="{% url 'buy_now' product.pk %}" method="get">
+                                        <button type="submit" class="btn btn-success">Buy Now</button>
+                                    </form>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?{% for cat in selected_categories %}category={{ cat }}&{% endfor %}{% if min_price %}min_price={{ min_price }}&{% endif %}{% if max_price %}max_price={{ max_price }}&{% endif %}page=1">&laquo; first</a>
+                        <a href="?{% for cat in selected_categories %}category={{ cat }}&{% endfor %}{% if min_price %}min_price={{ min_price }}&{% endif %}{% if max_price %}max_price={{ max_price }}&{% endif %}page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?{% for cat in selected_categories %}category={{ cat }}&{% endfor %}{% if min_price %}min_price={{ min_price }}&{% endif %}{% if max_price %}max_price={{ max_price }}&{% endif %}page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?{% for cat in selected_categories %}category={{ cat }}&{% endfor %}{% if min_price %}min_price={{ min_price }}&{% endif %}{% if max_price %}max_price={{ max_price }}&{% endif %}page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.category-option').on('click', function() {
+                $(this).toggleClass('selected');
+                let selectedCategories = [];
+                $('.category-option.selected').each(function() {
+                    selectedCategories.push($(this).data('category-id'));
+                });
+                let query = '';
+                if (selectedCategories.length > 0) {
+                    query = selectedCategories.map(cat => `category=${cat}`).join('&');
+                }
+                window.location.href = `?${query}`;
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,246 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.products-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.rating {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.star {
+    font-size: 16px;
+    color: #FFD700; /* Золотой цвет для звезд */
+}
+
+.star.filled {
+    color: #FFD700; /* Цвет заполненных звезд */
+}
+
+.star:not(.filled) {
+    color: #dcdcdc; /* Цвет незаполненных звезд */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-container form {
+    flex: 1;
+    margin-right: 3px; /* Отступ между кнопками */
+}
+
+.button-container form:last-child {
+    margin-right: 0;
+}
+.btn-success {
+    background-color: #1f9f3f; /* Зеленый цвет фона */
+    border: none; /* Убираем границу */
+    color: white; /* Белый цвет текста */
+    padding: 10px 20px; /* Внутренние отступы */
+    text-align: center; /* Центровка текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Позволяет задать ширину и высоту */
+    font-size: 16px; /* Размер текста */
+    margin: 4px 2px; /* Отступы */
+    cursor: pointer; /* Указатель при наведении */
+    border-radius: 8px; /* Скругленные углы */
+    transition-duration: 0.3s; /* Время перехода при наведении */
+}
+
+.btn-success:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #1f9f3f; /* Зеленый цвет текста при наведении */
+    border: 2px solid #1f9f3f; /* Зеленая граница при наведении */
+}
+
+/* Стили для кнопки "Add to Cart" */
+.btn-primary {
+    background-color: #0097b2; /* Синий цвет фона */
+    border: none; /* Убираем границу */
+    color: white; /* Белый цвет текста */
+    padding: 10px 20px; /* Внутренние отступы */
+    text-align: center; /* Центровка текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Позволяет задать ширину и высоту */
+    font-size: 16px; /* Размер текста */
+    margin: 4px 2px; /* Отступы */
+    cursor: pointer; /* Указатель при наведении */
+    border-radius: 8px; /* Скругленные углы */
+    transition-duration: 0.3s; /* Время перехода при наведении */
+}
+
+.btn-primary:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #0097b2; /* Синий цвет текста при наведении */
+    border: 2px solid #0097b2; /* Синяя граница при наведении */
+}
+
+.products-header {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex: 1;
+}
+
+.card {
+    width: 100%;
+    max-width: 250px;
+    margin: 5px;
+    animation: fadeInUp 0.5s ease forwards;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+}
+
+.card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    max-width: 100%;
+    height: auto;
+    max-height: 150px;
+    object-fit: contain;
+    display: block;
+    margin: 10px auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, max-height 0.3s ease;
+}
+
+.card-img-top.expanded {
+    transform: scale(1.5);
+    max-height: 400px;
+}
+
+.card-title {
+    font-size: 16px;
+}
+
+.card-text del {
+    color: #999;
+    margin-right: 5px;
+}
+
+.card-text {
+    font-size: 14px;
+}
+
+.card-text strong {
+    color: #d9534f;
+}
+
+.btn {
+    font-size: 12px;
+    padding: 5px 10px;
+    display: inline-block;
+    margin: 5px;
+}
+
+.pagination {
+    margin-top: 30px;
+    text-align: center;
+    margin-bottom: 20px; /* to ensure it has space at the bottom */
+}
+
+.pagination .step-links {
+    display: inline-block;
+}
+
+.pagination .step-links a,
+.pagination .step-links span {
+    margin: 0 4px;
+}
+
+.add-product-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add-product-container .btn-primary {
+    background-color: #0097b2; /* Зеленый цвет фона */
+    border: none; /* Убираем границу */
+    color: white; /* Белый цвет текста */
+    padding: 10px 20px; /* Внутренние отступы */
+    text-align: center; /* Центровка текста */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Позволяет задать ширину и высоту */
+    font-size: 16px; /* Размер текста */
+    margin: 4px 2px; /* Отступы */
+    cursor: pointer; /* Указатель при наведении */
+    border-radius: 8px; /* Скругленные углы */
+    transition-duration: 0.3s; /* Время перехода при наведении */
+}
+
+.add-product-container .btn-primary:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: black; /* Черный цвет текста при наведении */
+    border: 2px solid #0097b2; /* Зеленая граница при наведении */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

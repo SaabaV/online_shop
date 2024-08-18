@@ -1,0 +1,19 @@
+# Ignore environment variables file
+.env
+
+# Other files and directories to ignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.swn
+.DS_Store
+db.sqlite3
+media/
+*.log
+*.pot
+*.mo
+*.sqlite3
+*.sqlite3-journal

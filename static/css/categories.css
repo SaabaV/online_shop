@@ -1,0 +1,39 @@
+.categories-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.categories-container .filter-group {
+    margin: 0 15px;
+    text-align: center;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filter-group .category-option {
+    display: inline-block;
+    margin: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.filter-group .category-option span {
+    color: grey;
+    font-weight: normal;
+}
+
+.filter-group .category-option span.selected {
+    color: black;
+    font-weight: bold;
+}
+

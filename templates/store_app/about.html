@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/about.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <h2>About Color Gems</h2>
+        <div class="about-section">
+            <div class="about-text">
+                <p>Hello! My name is Diana, and I am delighted to welcome you to the website of my small yet cozy jewelry brand, Jewelry ColorGems. I am 25 years old, and since 2022, I've been completely immersed in creating jewelry that brings joy and inspiration. The story of my brand begins with a simple love for art and a desire to express my creativity through beautiful, unique pieces.
+
+My passion for jewelry-making started quite unexpectedly. One day, I saw my sister trying to create a piece of jewelry for herself, and it inspired me so much that I immediately went to the store, bought all the necessary materials, and enthusiastically set to work. My first bracelet wasn't easy to make—I admit, it took a lot of practice to master the skills and develop my own style. But every new step in this process only strengthened my desire to improve and create even more beautiful and unique jewelry.
+
+Before I founded ColorGems, my career was connected to video editing and design, and this undoubtedly influenced the development of my brand. I've always been passionate about creating something beautiful, something that can adorn and inspire. That's why I've dedicated my life to creative endeavors, from working with images and video to crafting unique jewelry pieces that can be worn every day or given as gifts to loved ones.
+
+At first, I made jewelry only for myself and my close friends. Each piece was crafted with love and carefully thought-out design. I derived immense pleasure from seeing the joy in the eyes of those who received my creations. However, over time, my hobby began to grow into something more significant. Friends of friends started placing orders with me, and I realized that what began as a simple hobby could evolve into the true work of my life.
+
+Today, Jewelry ColorGems is not just a brand. It is the embodiment of my dreams and passion for the art of jewelry-making. Every piece I create is imbued with special meaning and is designed to bring joy and inspiration to everyone who wears it. I sincerely hope that my jewelry will help you express your individuality and become a beloved part of your style.
+
+Welcome to the world of ColorGems, where every stone and every detail is created with care, love, and inspiration.
+                </p>
+            </div>
+            <div class="about-image">
+                <img src="{% static 'about/IMG_0538.JPG' %}" alt="Diana's Jewelry 1">
+            </div>
+        </div>
+        <div class="about-section">
+            <div class="about-image">
+                <img src="{% static 'about/IMG_0540.JPG' %}" alt="Diana's Jewelry 2">
+            </div>
+            <div class="about-text">
+                <p>In 2024, Diana founded Jewelry ColorGems to share her exquisite handmade jewelry with the world. She uses only high-quality materials to ensure that each piece is unique and special. Diana also offers custom-made jewelry on request, catering to individual tastes and preferences.</p>
+            </div>
+        </div>
+        <div class="about-section">
+            <div class="about-text">
+                <p>With a focus on craftsmanship and quality, Jewelry ColorGems aims to bring joy and elegance to every customer. Explore Diana's creations and discover the beauty of handmade jewelry.</p>
+            </div>
+            <div class="about-image">
+                <img src="{% static 'about/IMG_8968.JPG' %}" alt="Diana's Jewelry 3">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+

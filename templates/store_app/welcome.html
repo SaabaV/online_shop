@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome.css' %}">
+    <script src="{% static 'js/nav.js' %}"></script>
+    <script src="{% static 'js/welcome.js' %}"></script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="welcome-container">
+        <div class="images-container">
+            <img src="{% static 'images/welcome/IMG_3963.jpeg' %}" alt="Welcome Image 1" class="slide">
+            <img src="{% static 'images/welcome/IMG_3964.jpeg' %}" alt="Welcome Image 2" class="slide">
+        </div>
+        <div class="shop-now-container">
+            <a href="{% url 'home' %}" class="shop-now-button">SHOP NOW</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+

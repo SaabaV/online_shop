@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/product_detail.css' %}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+<div class="product-container {% if product.discounted_price %}discounted-product{% endif %}">
+    <div class="product-images">
+        <div class="main-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'images/default.png' %}" alt="Default Image">
+            {% endif %}
+        </div>
+        <div class="thumbnail-images">
+            {% for image in product.additional_images.all %}
+                <img src="{{ image.url }}" alt="Thumbnail">
+            {% endfor %}
+        </div>
+    </div>
+    <div class="product-details">
+        <h1>{{ product.name }}</h1>
+        <div class="product-price-reviews">
+            {% if product.discounted_price %}
+                <p class="product-price">€{{ product.discounted_price }}</p>
+                <p class="product-original-price"><del>€{{ product.price }}</del></p>
+            {% else %}
+                <p class="product-price">€{{ product.price }}</p>
+            {% endif %}
+            <div class="product-reviews">
+                <span>★★★★★</span> <span>{{ product.reviews.count }} Reviews</span>
+            </div>
+        </div>
+            <div class="product-color">
+                <label for="color">Color:</label>
+                <select id="color" name="color">
+                    {% for value, display in colors %}
+                        <option value="{{ value }}" {% if product.color == value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        <div class="product-availability">
+            <p>Auf Lager - Lieferung in 2-3 Werktagen</p>
+        </div>
+        <div class="product-actions">
+            <form id="add-to-cart-form" action="{% url 'add_to_cart' product.pk %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" id="form-quantity" value="1">
+                <button type="submit" class="btn btn-primary">In den Warenkorb</button>
+            </form>
+            <form action="{% url 'buy_now' product.pk %}" method="get">
+                <button type="submit" class="btn btn-success">Buy Now</button>
+            </form>
+        </div>
+        <div class="payment-options">
+            <img src="{% static 'images/payment/apple-pay-card5428.jpg' %}" alt="Apple Pay">
+            <img src="{% static 'images/payment/PayPal_Logo2014.svg' %}" alt="PayPal">
+            <img src="{% static 'images/payment/Klarna_Payment_Badge.svg.png' %}" alt="Klarna">
+            <img src="{% static 'images/payment/Visa_Inc._logo.svg.png' %}" alt="Visa">
+            <img src="{% static 'images/payment/mastercard.svg' %}" alt="Mastercard">
+        </div>
+        <div class="product-features">
+            <ul>
+                <li>100% Wasserfest</li>
+                <li>Nachhaltig & fair</li>
+                <li>100-fach vergoldet</li>
+                <li>Toxin frei & anti-allergen</li>
+            </ul>
+        </div>
+        <div class="product-description">
+            <p>{{ product.description }}</p>
+        </div>
+
+        <div class="reviews-section">
+            <h2>Reviews</h2>
+            <div class="reviews-list">
+                {% for review in product.reviews.all %}
+                <div class="review-card">
+                    <p><strong>{{ review.user.username }}</strong> rated it {{ review.rating }} stars</p>
+                    <p>{{ review.comment }}</p>
+                    <p><em>Reviewed on {{ review.created_at }}</em></p>
+                </div>
+                {% empty %}
+                <p>No reviews yet. Be the first to review this product!</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="review-form-section">
+            <h2>Leave a Review</h2>
+            <form action="{% url 'add_review' product.id %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

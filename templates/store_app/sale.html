@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sale</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sale.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="content">
+        <div class="products-container">
+            <h2 class="products-header">Sale Products</h2>
+            {% for product in products %}
+                <a href="{% url 'product_detail' product.pk %}" class="product-link">
+                    <div class="card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/default.png' %}" class="card-img-top product-image" alt="Default Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h3 class="card-title">{{ product.name }}</h3>
+                            <!-- Скрытое описание -->
+                            <p class="card-text hidden">{{ product.description }}</p>
+                            <p class="card-text">
+                                <strong>Original Price:</strong> <del>${{ product.price }}</del>
+                            </p>
+                            <p class="card-text">
+                                <strong>Sale Price:</strong> ${{ product.discounted_price }}
+                            </p>
+                            <button class="btn btn-primary">Add to Cart</button>
+                            <button class="btn btn-success">Buy Now</button>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

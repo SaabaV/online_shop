@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <h2>Shopping Cart</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.items.all %}
+                <tr data-product-id="{{ item.product.id }}" data-price="{{ item.price }}">
+                    <td>
+                        {{ item.product.name }}
+                        {% if item.product.discount_percentage > 0 %}
+                        <span class="discount-label">Discount</span>
+                        {% endif %}
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity-input" id="quantity-{{ item.product.id }}">
+                    </td>
+                    <td class="item-total" id="item-total-{{ item.product.id }}">${{ item.get_cost }}</td>
+                    <td>
+                        <form class="remove-from-cart-form" data-product-id="{{ item.product.id }}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger remove-item-btn">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Total: $<span id="cart-total">{{ cart.get_total_cost }}</span></h3>
+        <form id="checkout-form" action="{% url 'checkout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Checkout</button>
+        </form>
+    </div>
+
+    <div id="empty-cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Your cart is empty. Please add items to your cart before checking out.</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to update the item total and cart total
+            function updateTotals() {
+                let cartTotal = 0;
+                $('.table tbody tr').each(function() {
+                    const price = parseFloat($(this).data('price'));
+                    const quantity = parseInt($(this).find('.quantity-input').val());
+                    const productId = $(this).data('product-id');
+                    
+                    if (quantity > 0) {
+                        const itemTotal = price * quantity;
+                        $(this).find('.item-total').text(`$${itemTotal.toFixed(2)}`);
+                        cartTotal += itemTotal;
+                    } else {
+                        // AJAX call to remove item with quantity 0 from cart
+                        $.ajax({
+                            url: `/cart/remove/${productId}/`,
+                            type: 'POST',
+                            data: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    $(`tr[data-product-id="${productId}"]`).remove();
+                                }
+                            }
+                        });
+                    }
+                });
+                $('#cart-total').text(cartTotal.toFixed(2));
+            }
+
+            // Event listener for quantity change
+            $('.quantity-input').on('change', function() {
+                const productId = $(this).closest('tr').data('product-id');
+                const quantity = $(this).val();
+                const csrfToken = '{{ csrf_token }}';
+
+                // AJAX call to update quantity in cart
+                $.ajax({
+                    url: `/cart/update/${productId}/`,
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': csrfToken,
+                        'quantity': quantity
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            updateTotals();
+                        } else {
+                            alert('Error updating item quantity.');
+                        }
+                    }
+                });
+            });
+
+            // Initial total calculation
+            updateTotals();
+
+            // AJAX remove from cart
+            $('.remove-item-btn').on('click', function(e) {
+                e.preventDefault();
+                const productId = $(this).closest('.remove-from-cart-form').data('product-id');
+                const url = `/cart/remove/${productId}/`;
+                const csrfToken = '{{ csrf_token }}';
+                
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $(`tr[data-product-id="${productId}"]`).remove();
+                            updateTotals();
+                        } else {
+                            alert('Error removing item from cart.');
+                        }
+                    }
+                });
+            });
+
+            // Prevent checkout with zero quantity items
+            $('#checkout-form').on('submit', function(e) {
+                let hasValidItems = false;
+                $('.table tbody tr').each(function() {
+                    const quantity = parseInt($(this).find('.quantity-input').val());
+                    if (quantity > 0) {
+                        hasValidItems = true;
+                    }
+                });
+
+                if (!hasValidItems) {
+                    e.preventDefault();
+                    $('#empty-cart-modal').show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

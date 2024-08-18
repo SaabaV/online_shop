@@ -1,0 +1,46 @@
+<!-- store_app/templates/store_app/product_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Form</title>
+    <style>
+        form {
+            margin: 20px;
+        }
+        div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Edit Product{% else %}Add Product{% endif %}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="id_name">Name:</label>
+            {{ form.name }}
+        </div>
+        <div>
+            <label for="id_description">Description:</label>
+            {{ form.description }}
+        </div>
+        <div>
+            <label for="id_price">Price:</label>
+            {{ form.price }}
+        </div>
+        <div>
+            <label for="id_category">Category:</label>
+            {{ form.category }}
+        </div>
+        <div>
+            <label for="id_image">Image:</label>
+            {{ form.image }}
+        </div>
+        <div>
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>

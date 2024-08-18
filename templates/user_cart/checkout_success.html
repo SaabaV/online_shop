@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        color: #0097b2;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    p {
+        font-size: 1em;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    strong {
+        font-weight: bold;
+        color: #000;
+    }
+
+    .order-details, .shipping-details {
+        margin-bottom: 15px;
+    }
+
+    .order-details ul, .shipping-details ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .order-details ul li, .shipping-details ul li {
+        margin-bottom: 5px;
+    }
+
+    .back-to-home {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0097b2;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1em;
+        transition: background-color 0.3s;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .back-to-home:hover {
+        background-color: #0097b2;
+        text-decoration: none; /* Убирает подчеркивание при наведении */
+    }
+
+    .back-to-home:focus {
+        outline: none; /* Убирает выделение при фокусе */
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 0.9em;
+        color: #777;
+    }
+</style>
+
+<div class="container">
+    <h1>Thank you for order!</h1>
+    <hr>
+    <p>Your order number is <strong>{{ order.order_number }}</strong>.</p>
+    <p>Date: {{ order.created_at }}</p>
+    <p>Total Price: ${{ order.total_price }}</p>
+    <hr>
+    <h2>Order Details</h2>
+    <ul class="order-details">
+        {% for item in order.items.all %}
+        <li>{{ item.quantity }} x {{ item.product.name }} (Color: {{ item.color }}) - ${{ item.price }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h2>Shipping to:</h2>
+    <div class="shipping-details">
+        <p>Name: <strong>{{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}</strong>.</p>
+        <p>Address: <strong>{{ order.shipping_address.address }}</strong>.</p>
+        <p>City: <strong>{{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.postal_code }}</strong>.</p>
+        <p>Country: <strong>{{ order.shipping_address.country }}</strong>.</p>
+    </div>
+
+    <a href="{% url 'home' %}" class="back-to-home">Back to Home</a>
+</div>
+{% endblock %}
+
+
+
+
+
+

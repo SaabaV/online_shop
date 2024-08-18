@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/payment_page.css' %}">
+</head>
+<body>
+    {% include 'nav.html' %}
+    
+    <div class="payment-container">
+        <h1>Payment for {{ product.name }}</h1>
+        <div class="product-details">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+            <h2>{{ product.name }}</h2>
+                <p><strong>Price: </strong>
+                    {% if product.discounted_price %}
+                        ${{ product.discounted_price }}
+                    {% else %}
+                        ${{ product.price }}
+                    {% endif %}
+                </p>
+        </div>
+
+        <h2>Shipping Information</h2>
+        <form method="post" action="{% url 'buy_now' product.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+        </form>
+    </div>
+</body>
+</html>
+
+

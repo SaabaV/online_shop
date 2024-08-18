@@ -1,0 +1,61 @@
+/* nav.css */
+
+/* Общие стили для body */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Стили для welcome-container */
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+/* Стили для images-container */
+.images-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+}
+
+.images-container .slide {
+    width: 100%;
+    max-width: 800px;
+    display: none;
+}
+
+.images-container .slide:first-child {
+    display: block;
+}
+
+/* Стили для кнопки "SHOP NOW" */
+.shop-now-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.shop-now-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #0097b2;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.shop-now-button:hover {
+    background-color: #007a8c;
+}
+
+
+
