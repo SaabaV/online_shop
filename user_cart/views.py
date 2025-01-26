@@ -70,7 +70,6 @@ def buy_now(request, pk):
                 product=product,
                 quantity=1,
                 price=price,
-                color=product.color
             )
 
             session = stripe.checkout.Session.create(
@@ -231,7 +230,6 @@ def create_checkout_session(request):
                     order=order,
                     product=item.product,
                     quantity=item.quantity,
-                    color=item.product.color,
                     price=item.price
                 )
 
@@ -261,7 +259,7 @@ def checkout_success(request, order_id):
     # Подготовка данных для отправки письма
     try:
         order_details = "\n".join([
-            f"{item.product.name} (Color: {item.color}, Quantity: {item.quantity})"
+            f"{item.product.name} (Quantity: {item.quantity})"
             for item in order.items.all()
         ])
     except Exception as e:

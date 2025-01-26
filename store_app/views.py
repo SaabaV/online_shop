@@ -90,6 +90,8 @@ def product_create(request):
         if form.is_valid():
             form.save()
             return redirect('home')
+        else:
+            print(form.errors)  # Вывод ошибок формы в консоль
     else:
         form = ProductForm()
     return render(request, 'store_app/product_form.html', {'form': form})
@@ -138,12 +140,9 @@ def product_detail(request, pk):
     reviews = Review.objects.filter(product=product).order_by('-created_at')
     form = ReviewForm()
 
-    colors = product._meta.get_field('color').choices
-
     return render(request, 'store_app/product_detail.html', {
         'product': product,
         'reviews': reviews,
         'form': form,
-        'colors': colors,
     })
 

@@ -38,14 +38,6 @@
                 <span>★★★★★</span> <span>{{ product.reviews.count }} Reviews</span>
             </div>
         </div>
-            <div class="product-color">
-                <label for="color">Color:</label>
-                <select id="color" name="color">
-                    {% for value, display in colors %}
-                        <option value="{{ value }}" {% if product.color == value %}selected{% endif %}>{{ display }}</option>
-                    {% endfor %}
-                </select>
-            </div>
         <div class="product-availability">
             <p>Auf Lager - Lieferung in 2-3 Werktagen</p>
         </div>

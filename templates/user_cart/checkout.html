@@ -21,7 +21,7 @@
         <h2>Order Summary</h2>
         <ul>
             {% for item in cart.items.all %}
-            <li>{{ item.product.name }} ({{ item.product.color }}) - {{ item.quantity }} x ${{ item.price }}</li>
+            <li>{{ item.product.name }} - {{ item.quantity }} x ${{ item.price }}</li>
             {% endfor %}
         </ul>
         <p>Total: ${{ cart.get_total_cost }}</p>

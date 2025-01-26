@@ -67,9 +67,13 @@ class Order(models.Model):
     payment_date = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.order_number:
-            self.order_number = self.generate_order_number()
-        super().save(*args, **kwargs)
+        # Проверка, был ли заказ только что оплачен
+        if self.status == 'paid' and not Purchase.objects.filter(user=self.user, product__in=[item.product for item in self.items.all()]).exists():
+            # Создаем запись в Purchase для каждого продукта в заказе
+            for item in self.items.all():
+                Purchase.objects.create(user=self.user, product=item.product)
+        super().save(*args, **kwargsб
+                     )
 
     def generate_order_number(self):
         return str(uuid.uuid4()).replace('-', '').upper()[:12]
@@ -82,11 +86,10 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    color = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.product.name} (x{self.quantity}) in {self.color} - Order {self.order.order_number}"
+        return f"{self.product.name} (x{self.quantity}) - Order {self.order.order_number}"
 
 
 class ShippingAddress(models.Model):
