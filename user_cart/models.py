@@ -72,8 +72,7 @@ class Order(models.Model):
             # Создаем запись в Purchase для каждого продукта в заказе
             for item in self.items.all():
                 Purchase.objects.create(user=self.user, product=item.product)
-        super().save(*args, **kwargsб
-                     )
+        super().save(*args, **kwargs)
 
     def generate_order_number(self):
         return str(uuid.uuid4()).replace('-', '').upper()[:12]
