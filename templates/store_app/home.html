@@ -39,15 +39,15 @@
                 <div class="card-container">
                     {% for product in page_obj %}
                         <div class="card">
-                            <a href="{% url 'product_detail' product.pk %}">
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.name }}">
                             {% else %}
                                 <img src="{% static 'images/default.png' %}" class="card-img-top product-image" alt="Default Image">
                             {% endif %}
                             <div class="card-body">
-                                <h3 class="card-title">{{ product.name }}</h3>
-                            <!-- Отображение рейтинга -->
+                                <h3 class="card-title">
+                                    <a href="{% url 'product_detail' product.pk %}" class="product-link">{{ product.name }}</a>
+                                </h3>
                                 <div class="rating">
                                     {% for i in 1|to_range:6 %}
                                         {% if i <= product.average_rating %}
@@ -58,8 +58,8 @@
                                     {% endfor %}
                                     <span>({{ product.review_count }} reviews)</span>
                                 </div>
-                            
-                                <p class="card-text hidden-description">{{ product.description }}</p>
+                                <!-- Отображение описания товара -->
+                                <p class="card-text">{{ product.description|slice:":100" }}{% if product.description|length > 100 %}...{% endif %}</p>
                                 {% if product.discounted_price %}
                                     <p class="card-text"><strong>Sale Price:</strong> ${{ product.discounted_price }}</p>
                                     <p class="card-text"><del>Original Price: ${{ product.price }}</del></p>
@@ -69,6 +69,7 @@
                                 <div class="button-container">
                                     <form action="{% url 'add_to_cart' product.pk %}" method="post">
                                         {% csrf_token %}
+                                        <input type="number" name="quantity" value="1" min="1" class="quantity-input" style="width: 60px; margin-right: 10px;">
                                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                                     </form>
                                     <form action="{% url 'buy_now' product.pk %}" method="get">
@@ -76,7 +77,6 @@
                                     </form>
                                 </div>
                             </div>
-                            </a>
                         </div>
                     {% endfor %}
                 </div>

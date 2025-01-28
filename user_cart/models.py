@@ -67,12 +67,19 @@ class Order(models.Model):
     payment_date = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Проверка, был ли заказ только что оплачен
-        if self.status == 'paid' and not Purchase.objects.filter(user=self.user, product__in=[item.product for item in self.items.all()]).exists():
+        # Проверка, был ли заказ только что оплачен и не был ли он уже оплачен ранее
+        is_already_paid = self.pk and Order.objects.get(pk=self.pk).status == 'paid'
+        is_now_being_paid = self.status == 'paid' and not is_already_paid
+
+        super().save(*args, **kwargs)  # Сначала сохраняем изменения в базе данных
+
+        if is_now_being_paid:
             # Создаем запись в Purchase для каждого продукта в заказе
             for item in self.items.all():
                 Purchase.objects.create(user=self.user, product=item.product)
-        super().save(*args, **kwargs)
+
+            # Очищаем корзину пользователя, если статус заказа изменился на "Оплачено"
+            CartItem.objects.filter(cart__user=self.user).delete()
 
     def generate_order_number(self):
         return str(uuid.uuid4()).replace('-', '').upper()[:12]
